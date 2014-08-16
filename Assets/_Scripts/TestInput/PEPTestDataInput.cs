@@ -2,17 +2,6 @@ using UnityEngine;
 using System.Collections;
 public class PEPTestDataInput : MonoBehaviour
 {
-
-	// Used to make it simpler to know the status
-	public enum BreathStatus 
-	{
-		Ready = 0,
-		Inhale = 1,
-		Exhale = 2,
-		Rest = 3,
-		Finished = 4
-	}
-
 	public GUIText bellabroadcast_parameter_text;
 	public GUIText bellabroadcast_output_text;
 
@@ -56,7 +45,7 @@ public class PEPTestDataInput : MonoBehaviour
 	private int maxLength = 160;
 	private float nextUpdate;
 	private const float delay = 0.4f;//in seconds delay.
-	private float xspace = 0.005f;
+//	private float xspace = 0.005f;
 	private string platform;
 
 	private Vector2[] linePoints;
@@ -93,7 +82,7 @@ public class PEPTestDataInput : MonoBehaviour
 
 	private void initUnity3DEditorPEPDataGenerator()
 	{
-		pepTestData = new PEPDataGenerator ();
+		pepTestData = gameObject.GetComponent<PEPDataGenerator>();
 		platform = "Unity3D Editor";
 		//set parameters
 		status = pepTestData.Status;

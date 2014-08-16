@@ -6,38 +6,20 @@ public class PlayerControlledComponent : MonoBehaviour
 
 	public Ray ray;
 	public RaycastHit rayHit;
-
 	public NavMeshAgent navMeshAgent;
-
 	public float MaxSpeed = 5;
 
 	[SerializeField]
-	private int speedPercent = 100;
+	private float speedPercent = 100;
 
-	public int SpeedPercent
-	{
-		get { return speedPercent; }
-		set 
-		{
-			if(value < 0)
-			{
-				speedPercent = 0;
-			}
-			else if (value > 100)
-			{
-				speedPercent = 0;
-			}
-			else
-			{
-				speedPercent = value;
-			}
-		}
-	}
+	[SerializeField]
+	private float speedMod = 0;
 
 	[SerializeField]
 	private GameObject BreathInput;
 
 	private PEPTestDataInput testData;
+	private PepMeasurementsComponent measurements;
 
 	void Start()
 	{
@@ -45,6 +27,7 @@ public class PlayerControlledComponent : MonoBehaviour
 		if(BreathInput != null)
 		{
 			testData = BreathInput.GetComponent<PEPTestDataInput>();
+			measurements = BreathInput.GetComponent<PepMeasurementsComponent>();
 		}
 		else
 		{
@@ -56,21 +39,37 @@ public class PlayerControlledComponent : MonoBehaviour
 	void Update()
 	{
 		GetTouchInput();
-		SpeedPercent = SetSpeedNumber();
-		Debug.Log("This is the speed percentage" + SpeedPercent);
+		SpeedPercent = SetSpeedNumber() * (SpeedMod / 100f);
+		//Debug.Log("This is the speed percentage" + SpeedPercent);
 		navMeshAgent.speed = MaxSpeed * ((float)speedPercent / 100);
+		IncreaseSpeedMod();
+		CheckForFailedRound();
+	}
+
+	private void IncreaseSpeedMod ()
+	{
+		if(measurements.ConstantBreath == true)
+		{
+			SpeedMod += 0.25f;
+		}
+	}
+
+	void CheckForFailedRound ()
+	{
+		if(measurements.ConstantBreath == false)
+		{
+			SpeedMod = 20f;
+		}
 	}
 
 	private void GetTouchInput()
 	{
-		if(Input.GetButtonDown("MouseTouch1"))
+		if(Input.GetButton("MouseTouch1"))
 		{
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Physics.Raycast(ray, out rayHit, 200f);
 			if(rayHit.collider != null)
 			{
-				Debug.Log(rayHit.collider.gameObject);
-				Debug.Log(rayHit.point);
 				navMeshAgent.destination = rayHit.point;
 			}
 		}
@@ -82,19 +81,19 @@ public class PlayerControlledComponent : MonoBehaviour
 	{
 		switch (testData.Status)
 		{
-		case (PEPTestDataInput.BreathStatus.Inhale):
+		case (BreathStatus.Inhale):
 			tempSpeed = Inhale();
 			break;
 
-		case (PEPTestDataInput.BreathStatus.Exhale):
+		case (BreathStatus.Exhale):
 			tempSpeed = Exhale();
 			break;
 
-		case (PEPTestDataInput.BreathStatus.Rest):
+		case (BreathStatus.Rest):
 			tempSpeed = Rest();
 			break;
 			
-		case (PEPTestDataInput.BreathStatus.Finished):
+		case (BreathStatus.Finished):
 			tempSpeed = Finished();
 			break;
 		}
@@ -140,6 +139,50 @@ public class PlayerControlledComponent : MonoBehaviour
 	{
 		return 100;
 	}
+
+
+
+	
+	public float SpeedPercent
+	{
+		get { return speedPercent; }
+		set 
+		{
+			if(value < 0)
+			{
+				speedPercent = 0;
+			}
+			else if (value > 100)
+			{
+				speedPercent = 100;
+			}
+			else
+			{
+				speedPercent = value;
+			}
+		}
+	}
+
+	public float SpeedMod
+	{
+		get { return speedMod; }
+		set 
+		{
+			if(value < 0)
+			{
+				speedMod = 0;
+			}
+			else if (value > 100)
+			{
+				speedMod = 100;
+			}
+			else
+			{
+				speedMod = value;
+			}
+		}
+	}
+
 }
 
 

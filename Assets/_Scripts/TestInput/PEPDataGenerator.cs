@@ -2,27 +2,29 @@
 using UnityEngine;
 using System.Collections;
 
-public class PEPDataGenerator
+public class PEPDataGenerator : MonoBehaviour
 {
 	// **** required parameters
-	public int Breathing = 15;
-	public int Repeat = 6;
-	public int MinPressure = 10;
-	public int MaxPressure = 20; // valid pressure
-	public int MinInhale = 3;
-	public int MaxInhale = 4; // each breath take
-	public int MinExhale = 3;
-	public int MaxExhale = 4; // each breath take
-	public int MinRest = 20;
-	public int MaxRest = 40; // 3-4 seconds
+	public int Breathing = 15; // Default is 15
+	public int Repeat = 6; // Default is 6
+	public int MinPressure = 10; // Default is 10
+	public int MaxPressure = 20; // Default is 20
+	public int MinInhale = 3; // Default is 3
+	public int MaxInhale = 4; // each breath take // Default is 4
+	public int MinExhale = 3; // Default is 3
+	public int MaxExhale = 4; // each breath take // Default is 4
+	public int MinRest = 20; // Default is 20
+	public int MaxRest = 40; // 3-4 seconds // Default is 40
 
 	public int Status = 0;
 	public int BreathCount = 0;
 	public int RepeatCount = 0;
 
 	// **** internal use
-	private int MAXPREPARE = 2;
-	private int FAILRATE = 50; // 50% Fail rate
+	[SerializeField]
+	private int MAXPREPARE = 0;
+	[SerializeField]
+	private int FAILRATE = 0; // 50% Fail rate
 
 	private DateTime prepareTime, inhaleTime, exhaleTime, restTime;
 
