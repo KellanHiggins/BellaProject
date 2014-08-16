@@ -22,7 +22,7 @@ public class PEPDataGenerator
 
 	// **** internal use
 	private int MAXPREPARE = 2;
-	private int FAILRATE = 5; // 5% Fail rate
+	private int FAILRATE = 50; // 50% Fail rate
 
 	private DateTime prepareTime, inhaleTime, exhaleTime, restTime;
 
