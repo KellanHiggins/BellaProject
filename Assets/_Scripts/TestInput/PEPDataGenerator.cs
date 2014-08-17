@@ -28,6 +28,20 @@ public class PEPDataGenerator : MonoBehaviour
 
 	private DateTime prepareTime, inhaleTime, exhaleTime, restTime;
 
+	void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.X))
+		{
+			FAILRATE = 25;
+		}
+		if(Input.GetKeyDown(KeyCode.C))
+		{
+			FAILRATE = 0;
+		}
+	}
+
+
+
 	public PEPDataGenerator()
 	{
 		initData();

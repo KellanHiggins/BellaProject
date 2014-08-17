@@ -52,7 +52,7 @@ public class PepMeasurementsComponent : MonoBehaviour {
 		{
 			if(testData.BreathStrength < testData.PressureMaximum && testData.BreathStrength > testData.PressureMinimum)
 			{
-				Debug.Log("This is good to go");
+
 			}
 			else
 			{

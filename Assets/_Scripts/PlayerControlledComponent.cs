@@ -21,9 +21,12 @@ public class PlayerControlledComponent : MonoBehaviour
 	private PEPTestDataInput testData;
 	private PepMeasurementsComponent measurements;
 
+	private BackpackComponent backpack;
+
 	void Start()
 	{
 		navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
+		backpack = gameObject.GetComponent<BackpackComponent>();
 		if(BreathInput != null)
 		{
 			testData = BreathInput.GetComponent<PEPTestDataInput>();
@@ -59,6 +62,15 @@ public class PlayerControlledComponent : MonoBehaviour
 		if(measurements.ConstantBreath == false)
 		{
 			SpeedMod = 20f;
+			// Now throw off all rings in a magical way.
+			int ringsToThrow = backpack.RingsHeld;
+			backpack.timeToPickUp = 4f;
+			for(int i = 0; i < ringsToThrow; i++)
+			{
+				GameObject newObj = Instantiate(Resources.Load("Ring"), gameObject.transform.position + Vector3.up * 2f + new Vector3(Random.Range(-1, 1f), 0f, Random.Range(-1,1f)), Quaternion.identity) as GameObject;
+				newObj.rigidbody.AddForce(gameObject.transform.up * 5 + new Vector3(Random.Range(-1, 1f), 0f, Random.Range(-1,1f)) * 5);
+			}
+			backpack.RingsHeld = 0;
 		}
 	}
 
