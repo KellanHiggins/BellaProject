@@ -16,7 +16,7 @@ public class PepMeasurementsComponent : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void Update() 
 	{
 		TestForConsistency();
 
@@ -45,8 +45,6 @@ public class PepMeasurementsComponent : MonoBehaviour {
 		{
 			BreathsAreConsistent = true;
 		}
-
-
 
 		if(testData.Status == BreathStatus.Exhale)
 		{

@@ -4,6 +4,7 @@ using System.Collections;
 public class BackpackComponent : MonoBehaviour {
 
 	public int RingsHeld;
+	public AudioClip sparkleSound;
 
 	[SerializeField]
 	public float timeToPickUp;
@@ -27,6 +28,7 @@ public class BackpackComponent : MonoBehaviour {
 	{
 		if(canPickUp)
 		{
+			AudioSource.PlayClipAtPoint(sparkleSound, gameObject.transform.position);
 			Destroy(other.collider.gameObject);
 			RingsHeld += 1;
 		}

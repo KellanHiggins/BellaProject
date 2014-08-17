@@ -4,6 +4,10 @@ using System.Collections;
 public class PlayerControlledComponent : MonoBehaviour 
 {
 
+	public AudioClip horseSound;
+	public AudioClip sparkleSound;
+
+
 	public Ray ray;
 	public RaycastHit rayHit;
 	public NavMeshAgent navMeshAgent;
@@ -23,10 +27,14 @@ public class PlayerControlledComponent : MonoBehaviour
 
 	private BackpackComponent backpack;
 
+	Animator horseAnim;
+
+
 	void Start()
 	{
 		navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
 		backpack = gameObject.GetComponent<BackpackComponent>();
+		horseAnim = gameObject.GetComponentInChildren<Animator>();
 		if(BreathInput != null)
 		{
 			testData = BreathInput.GetComponent<PEPTestDataInput>();
@@ -47,6 +55,7 @@ public class PlayerControlledComponent : MonoBehaviour
 		navMeshAgent.speed = MaxSpeed * ((float)speedPercent / 100);
 		IncreaseSpeedMod();
 		CheckForFailedRound();
+		horseAnim.SetFloat("Speed", navMeshAgent.velocity.magnitude);
 	}
 
 	private void IncreaseSpeedMod ()
@@ -59,8 +68,10 @@ public class PlayerControlledComponent : MonoBehaviour
 
 	void CheckForFailedRound ()
 	{
-		if(measurements.ConstantBreath == false)
+		if(measurements.ConstantBreath == false && backpack.RingsHeld > 0)
 		{
+			AudioSource.PlayClipAtPoint(horseSound, gameObject.transform.position);
+//			horseS
 			SpeedMod = 20f;
 			// Now throw off all rings in a magical way.
 			int ringsToThrow = backpack.RingsHeld;
